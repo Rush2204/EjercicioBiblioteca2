@@ -31,14 +31,24 @@ namespace EjercicioBiblioteca.Controllers
             return Ok(listadoAutor);
         }
 
-        // Para buscar los registros por ID
+        // Para buscar los registros por ID con libro
 
         [HttpGet]
         [Route("GetById/{id}")]
 
         public IActionResult Get(int id)
         {
-            Autor? autor = (from e in _BibliotecaContext.Autor where e.id_Autor == id select e).FirstOrDefault();
+            var autor = (from e in _BibliotecaContext.Autor
+                         join t in _BibliotecaContext.Libro
+                         on e.id_Autor equals t.autor_id
+                         where e.id_Autor == id
+                         select new
+                         {
+                             e.id_Autor,
+                             e.Nombre,
+                             e.Nacionalidad,
+                             detalle = $"Libro : {t.titulo}"
+                         }).ToList();
 
             if (autor == null)
             {

@@ -31,14 +31,27 @@ namespace EjercicioBiblioteca.Controllers
             return Ok(listadoLibro);
         }
 
-        // Para buscar los registros por ID
+        // Para buscar los registros por ID con Autor
 
         [HttpGet]
         [Route("GetById/{id}")]
 
         public IActionResult Get(int id)
         {
-            Libro? libro = (from e in _BibliotecaContext.Libro where e.id_libro == id select e).FirstOrDefault();
+            var libro = (from e in _BibliotecaContext.Libro 
+                         join t in _BibliotecaContext.Autor
+                         on e.autor_id equals t.id_Autor
+                         where e.id_libro == id 
+                         select new 
+                         {
+                             e.id_libro,
+                             e.titulo,
+                             e.anioPublicacion,
+                             e.autor_id,
+                             e.categoria_id,
+                             e.resumen,
+                             detalle = $"Autor : {t.Nombre}"
+                         }).ToList();
 
             if (libro == null)
             {
@@ -46,6 +59,36 @@ namespace EjercicioBiblioteca.Controllers
             }
             return Ok(libro);
         }
+
+        /*
+         // Para buscar los registros por ID del autor y que en un solo registro se vea todos los libros
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+
+        public IActionResult Get(int id)
+        {
+            var autor = _BibliotecaContext.Autor
+        .Where(e => e.id_autor == id)
+        .Select(e => new
+        {
+            e.id_autor,
+            e.Nombre,
+            e.Nacionalidad,
+            Libros = _BibliotecaContext.Libro
+                .Where(t => t.autor_id == e.id_autor)
+                .Select(t => t.titulo)  // Solo extraemos los títulos
+                .ToList() // Convertimos a lista
+        })
+        .FirstOrDefault();
+
+            if (autor == null)
+            {
+                return NotFound();
+            }
+            return Ok(autor);
+        }
+        */
 
         // Para agregar un nuevo registro:
 
