@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EjercicioBiblioteca.Modelos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace WebApplication1.Modelos
@@ -9,5 +10,7 @@ namespace WebApplication1.Modelos
         {
         }
 
+        public DbSet<Autor> Autor { get; set; }
+        public DbSet<Libro> Libro { get; set; }
     }
 }
