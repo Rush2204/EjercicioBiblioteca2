@@ -16,7 +16,7 @@ namespace EjercicioBiblioteca.Controllers
             _BibliotecaContext = BibliotecaContext;
         }
 
-        // Para poder ver todos los registros:
+        // Para poder ver todos los registros: 
 
         [HttpGet]
         [Route("GetAll")]
