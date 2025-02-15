@@ -45,5 +45,24 @@ namespace EjercicioBiblioteca.Controllers
             }
             return Ok(libro);
         }
+
+        // Para agregar un nuevo registro:
+
+        [HttpPost]
+        [Route("Add")]
+
+        public IActionResult GuardarLibro([FromBody] Libro libro)
+        {
+            try
+            {
+                _BibliotecaContext.Libro.Add(libro);
+                _BibliotecaContext.SaveChanges();
+                return Ok(libro);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
