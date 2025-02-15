@@ -74,6 +74,44 @@ namespace EjercicioBiblioteca.Controllers
             }
         }
 
+        // Para actualizar un registro
 
+        [HttpPut]
+        [Route("actualizar/{id}")]
+
+        public IActionResult ActualizarAutor(int id, [FromBody] Autor autorModificar)
+        {
+            Autor? autorActual = (from e in _BibliotecaContext.Autor where e.id_Autor == id select e).FirstOrDefault();
+
+            if (autorActual == null)
+            { return NotFound(); }
+
+            autorActual.Nombre = autorModificar.Nombre;
+            autorActual.Nacionalidad = autorModificar.Nacionalidad;
+
+            _BibliotecaContext.Entry(autorActual).State = EntityState.Modified;
+            _BibliotecaContext.SaveChanges();
+
+            return Ok(autorModificar);
+        }
+
+        // Para Eliminar un registro
+
+        [HttpDelete]
+        [Route("eliminar/{id}")]
+
+        public IActionResult EliminarAutor(int id)
+        {
+            Autor? autor = (from e in _BibliotecaContext.Autor where e.id_Autor == id select e).FirstOrDefault();
+
+            if (autor == null)
+            { return NotFound(); }
+
+            _BibliotecaContext.Autor.Attach(autor);
+            _BibliotecaContext.Autor.Remove(autor);
+            _BibliotecaContext.SaveChanges();
+
+            return Ok(autor);
+        }
     }
 }
