@@ -6,7 +6,7 @@ namespace EjercicioBiblioteca.Modelos
         [Key]
         public int id_Autor { get; set; }
         public string Nombre { get; set; }
-        public string Nacionalidad { get; set; }
+
 
     }
 }
