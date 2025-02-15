@@ -22,21 +22,13 @@ namespace EjercicioBiblioteca.Controllers
         [Route("GetAll")]
         public IActionResult Index()
         {
-            try
-            {
-                List<Autor> listadoAutor = _BibliotecaContext.Autor.ToList();
+            List<Autor> listadoAutor = (from e in _BibliotecaContext.Autor select e).ToList();
 
-                if (listadoAutor.Count == 0)
-                {
-                    return NotFound("No se encontraron autores.");
-                }
-                return Ok(listadoAutor);
-            }
-            catch (Exception ex)
+            if (listadoAutor.Count == 0)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                                  new { message = "Ocurrió un error al obtener los autores.", error = ex.Message });
+                return NotFound();
             }
+            return Ok(listadoAutor);
         }
 
         // Para buscar los registros por ID
@@ -113,5 +105,7 @@ namespace EjercicioBiblioteca.Controllers
 
             return Ok(autor);
         }
+
     }
+
 }
