@@ -89,6 +89,25 @@ namespace EjercicioBiblioteca.Controllers
 
             return Ok(libroModificar);
         }
+
+        // Para Eliminar un registro
+
+        [HttpDelete]
+        [Route("eliminar/{id}")]
+
+        public IActionResult EliminarLibro(int id)
+        {
+            Libro? libro = (from e in _BibliotecaContext.Libro where e.id_libro == id select e).FirstOrDefault();
+
+            if (libro == null)
+            { return NotFound(); }
+
+            _BibliotecaContext.Libro.Attach(libro);
+            _BibliotecaContext.Libro.Remove(libro);
+            _BibliotecaContext.SaveChanges();
+
+            return Ok(libro);
+        }
     }
 
 }
