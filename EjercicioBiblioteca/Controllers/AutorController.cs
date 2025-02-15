@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Modelos;
 using Microsoft.EntityFrameworkCore;
 using EjercicioBiblioteca.Modelos;
 
@@ -23,15 +22,37 @@ namespace EjercicioBiblioteca.Controllers
         [Route("GetAll")]
         public IActionResult Index()
         {
-            List<Autor> listadoAutor = (from e in _BibliotecaContext.Autor select e).ToList();
+            try
+            {
+                List<Autor> listadoAutor = _BibliotecaContext.Autor.ToList();
 
-            if (listadoAutor.Count == 0)
+                if (listadoAutor.Count == 0)
+                {
+                    return NotFound("No se encontraron autores.");
+                }
+                return Ok(listadoAutor);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                  new { message = "Ocurrió un error al obtener los autores.", error = ex.Message });
+            }
+        }
+
+        // Para buscar los registros por ID
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+
+        public IActionResult Get(int id)
+        {
+            Autor? autor = (from e in _BibliotecaContext.Autor where e.id_Autor == id select e).FirstOrDefault();
+
+            if (autor == null)
             {
                 return NotFound();
             }
-            return Ok(listadoAutor);
+            return Ok(autor);
         }
-
-
     }
 }
