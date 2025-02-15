@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using WebApplication1.Modelos;
+using EjercicioBiblioteca.Modelos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
