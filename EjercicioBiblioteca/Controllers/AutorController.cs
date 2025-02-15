@@ -54,5 +54,26 @@ namespace EjercicioBiblioteca.Controllers
             }
             return Ok(autor);
         }
+
+        // Para agregar un nuevo registro:
+
+        [HttpPost]
+        [Route("Add")]
+
+        public IActionResult GuardarAutor([FromBody] Autor autor)
+        {
+            try
+            {
+                _BibliotecaContext.Autor.Add(autor);
+                _BibliotecaContext.SaveChanges();
+                return Ok(autor);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
