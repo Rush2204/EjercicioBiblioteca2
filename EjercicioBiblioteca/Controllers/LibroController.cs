@@ -1,6 +1,7 @@
 ﻿using EjercicioBiblioteca.Modelos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EjercicioBiblioteca.Controllers
 {
@@ -64,5 +65,30 @@ namespace EjercicioBiblioteca.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        // Para actualizar un registro
+
+        [HttpPut]
+        [Route("actualizar/{id}")]
+
+        public IActionResult ActualizarLibro(int id, [FromBody] Libro libroModificar)
+        {
+            Libro? libroActual = (from e in _BibliotecaContext.Libro where e.id_libro == id select e).FirstOrDefault();
+
+            if (libroActual == null)
+            { return NotFound(); }
+
+            libroActual.titulo = libroModificar.titulo;
+            libroActual.anioPublicacion = libroModificar.anioPublicacion;
+            libroActual.autor_id = libroModificar.autor_id;
+            libroActual.categoria_id = libroModificar.categoria_id;
+            libroActual.resumen = libroModificar.resumen;
+
+            _BibliotecaContext.Entry(libroActual).State = EntityState.Modified;
+            _BibliotecaContext.SaveChanges();
+
+            return Ok(libroModificar);
+        }
     }
+
 }
