@@ -29,5 +29,21 @@ namespace EjercicioBiblioteca.Controllers
             }
             return Ok(listadoLibro);
         }
+
+        // Para buscar los registros por ID
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+
+        public IActionResult Get(int id)
+        {
+            Libro? libro = (from e in _BibliotecaContext.Libro where e.id_libro == id select e).FirstOrDefault();
+
+            if (libro == null)
+            {
+                return NotFound();
+            }
+            return Ok(libro);
+        }
     }
 }
