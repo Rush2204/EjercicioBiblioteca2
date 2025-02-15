@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
-namespace WebApplication1.Modelos
+namespace EjercicioBiblioteca.Modelos
 {
     public class BibliotecaContext : DbContext
     {
