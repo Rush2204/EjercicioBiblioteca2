@@ -47,8 +47,15 @@ namespace EjercicioBiblioteca.Controllers
                              e.id_Autor,
                              e.Nombre,
                              e.Nacionalidad,
-                             detalle = $"Libro : {t.titulo}"
-                         }).ToList();
+                             libros = (from e in _BibliotecaContext.Autor
+                                       join t in _BibliotecaContext.Libro
+                                       on e.id_Autor equals t.autor_id
+                                       where e.id_Autor == id
+                                       select new
+                                       {
+                                           t.titulo
+                                       }).ToList()
+                         }).FirstOrDefault();
 
             if (autor == null)
             {
